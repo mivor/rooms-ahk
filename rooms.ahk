@@ -15,7 +15,7 @@ RoomNrControl = TStaticText7
 RoomNameControl = TStaticText10
 DateArrivalControl = TStaticText13
 DateLeaveControl = TStaticText12
-NameControl = TStaticText15
+ResNameControl = TStaticText15
 
 F3::
 Main()
@@ -55,10 +55,24 @@ SearchList()
             Sleep, 250
             MouseClick,, %MoveDiff%, 0,,,, R
             ; MouseMove, %MoveDiff%, 0,, R
+            if ( HasReservation() == 1 )
+            {
+                ; do stuff with reservation
+            }
+
         }
         Sleep, 500
         MouseClick,, %StartX%, % StartY + (A_Index * MoveDiff)
     }
+}
+
+HasReservation()
+{
+    ControlGetText, ResName, %ResNameControl%, A
+    IfExist, ResName
+        return 1
+    else
+        return 0
 }
 
 CheckWindow()
