@@ -9,6 +9,13 @@ MoveDiff = 34
 MonthDays = 31
 FilterControl = TDBFilterCombo1
 DateControl = TDateTimePicker1
+PersonNrControl = TStaticText1
+NightNrControl = TStaticText5
+RoomNrControl = TStaticText7
+RoomNameControl = TStaticText10
+DateArrivalControl = TStaticText13
+DateLeaveControl = TStaticText12
+NameControl = TStaticText15
 
 F3::
 CheckWindow()
