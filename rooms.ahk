@@ -8,10 +8,13 @@ StartY = 163
 MoveDiff = 34
 MonthDays = 31
 FilterControl = TDBFilterCombo1
+DateControl = TDateTimePicker1
 
 F3::
 CheckWindow()
 CheckFilter()
+Sleep, 200
+MonthDays := GetMonthDays(DateControl)
 SearchList()
 ExitApp, 0
 
@@ -19,7 +22,8 @@ F4::
 ExitApp, 1
 
 F6::
-CheckFilter()
+MonthDays := GetMonthDays(DateControl)
+Msgbox, %MonthDays%
 return
 
 F2::
@@ -68,8 +72,22 @@ CheckFilter()
     }
 }
 
-GetMonthDays(){
-
+GetMonthDays(p_DateControl){
+    ControlGetText, DateText, %p_DateControl%, A
+    Year := SubStr(DateText, -3 , 4)
+    Month := SubStr(DateText, -6 , 2)
+    FormatTime, DayStart, % Year . Month, YDay
+    Month := Month + 1
+    if (Month > 12)
+    {
+        Days := 31
+    }
+    else
+    {
+        FormatTime, DayEnd, % Year . Month, YDay
+        Days := DayEnd - DayStart
+    }
+    return Days
 }
 
 GetControlList()
