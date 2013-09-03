@@ -53,14 +53,26 @@ SearchList()
         Loop, % MonthDays - 1
         {
             Sleep, 250
-            MouseClick,, %MoveDiff%, 0,,,, R
             ; MouseMove, %MoveDiff%, 0,, R
             if ( HasReservation() == 1 && NotSameReservation() == 1)
             {
                 ; do stuff with reservation
                 GetCellData()
+                ; check if RoomNr > 1 then
+                ;     check if room is already in ProcessedRes array
+                ;         subtract 1 from array element
+                ;     else
+                ;         add room to ProcessedRes array
+                ;         add PersonNr to CurrentSum [Rooms|Apartman|Manzard]
+                ; else
+                ;     add PersonNr to CurrentSum [Rooms|Apartman|Manzard]
+                ;
+                ; jump to end of reservation [NightNr * MoveDiff]
             }
-
+            else
+            {
+                MouseClick,, %MoveDiff%, 0,,,, R
+            }
         }
         Sleep, 500
         MouseClick,, %StartX%, % StartY + (A_Index * MoveDiff)
