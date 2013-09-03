@@ -21,7 +21,7 @@ ExitApp, 0
 F4::
 ExitApp, 1
 
-F6::
+F9::
 MonthDays := GetMonthDays(DateControl)
 Msgbox, %MonthDays%
 return
@@ -34,16 +34,17 @@ return
 SearchList()
 {
     global
-    MouseMove, %StartX%, %StartY%
+    MouseClick,, %StartX%, %StartY%
     Loop, 20
     {
         Loop, % MonthDays - 1
         {
-            Sleep, 20
-            MouseMove, %MoveDiff%, 0,, R
+            Sleep, 250
+            MouseClick,, %MoveDiff%, 0,,,, R
+            ; MouseMove, %MoveDiff%, 0,, R
         }
         Sleep, 500
-        MouseMove, %StartX%, % StartY + (A_Index * MoveDiff)
+        MouseClick,, %StartX%, % StartY + (A_Index * MoveDiff)
     }
 }
 
