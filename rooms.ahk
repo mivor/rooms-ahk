@@ -2,6 +2,12 @@
 ; Made by Mivor
 
 #SingleInstance force
+SendMode, Input
+StartX = 127
+StartY = 163
+MoveDiff = 34
+MonthDays = 31
+FilterControl = TDBFilterCombo1
 
 F3::
 CheckWindow()
