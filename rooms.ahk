@@ -55,7 +55,7 @@ SearchList()
             Sleep, 250
             MouseClick,, %MoveDiff%, 0,,,, R
             ; MouseMove, %MoveDiff%, 0,, R
-            if ( HasReservation() == 1 )
+            if ( HasReservation() == 1 && NotSameReservation() == 1)
             {
                 ; do stuff with reservation
                 GetCellData()
@@ -87,6 +87,16 @@ HasReservation()
     else
         return 0
 }
+
+NotSameReservation()
+{
+    ControlGetText, TempDateLeave, %DateLeaveControl%, A
+    If ( DateLeave != TempDateLeave )
+        return 1
+    else
+        return 0
+}
+
 
 CheckWindow()
 {
