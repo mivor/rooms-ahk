@@ -18,12 +18,7 @@ DateLeaveControl = TStaticText12
 NameControl = TStaticText15
 
 F3::
-CheckWindow()
-CheckFilter()
-Sleep, 200
-MonthDays := GetMonthDays(DateControl)
-SearchList()
-ExitApp, 0
+Main()
 
 F4::
 ExitApp, 1
@@ -37,6 +32,17 @@ F2::
 GetControlList()
 ; GetWindowText()
 return
+
+Main()
+{
+    global
+    CheckWindow()
+    CheckFilter()
+    Sleep, 200
+    MonthDays := GetMonthDays(DateControl)
+    SearchList()
+    ExitApp, 0
+}
 
 SearchList()
 {
