@@ -58,12 +58,25 @@ SearchList()
             if ( HasReservation() == 1 )
             {
                 ; do stuff with reservation
+                GetCellData()
             }
 
         }
         Sleep, 500
         MouseClick,, %StartX%, % StartY + (A_Index * MoveDiff)
     }
+}
+
+GetCellData()
+{
+    global
+    ControlGetText, PersonNr, %PersonNrControl%
+    ControlGetText, RoomNr, %RoomNrControl%
+    ControlGetText, NightNr, %NightNrControl%
+    ControlGetText, DateArrival, %DateArrivalControl%
+    ControlGetText, DateLeave, %DateLeaveControl%
+    ControlGetText, ResName, %ResNameControl%
+    ControlGetText, RoomName, %RoomNameControl%
 }
 
 HasReservation()
