@@ -7,6 +7,7 @@ StartX = 127
 StartY = 163
 MoveDiff = 34
 MonthDays = 31
+CurrentDay = 1
 FilterControl = TDBFilterCombo1
 DateControl = TDateTimePicker1
 PersonNrControl = TStaticText1
@@ -47,9 +48,7 @@ SearchList() {
     global
     MouseClick,, %StartX%, %StartY%
     Loop, 20 {
-        Loop, % MonthDays - 1 {
-            Sleep, 250
-            ; MouseMove, %MoveDiff%, 0,, R
+        While,  CurrentDay <= MonthDays {
             if ( HasReservation(ResNameControl) && NotSameReservation(DateLeave,DateLeaveControl) ) {
                 ; do stuff with reservation
                 GetCellData()
@@ -64,25 +63,27 @@ SearchList() {
                 ;     add PersonNr to CurrentSum [Rooms|Apartman|Manzard]
                 ;
                 ; jump to end of reservation [NightNr * MoveDiff]
+                CurrentDay := CurrentDay + NightNr
+                Sleep, 400
                 MouseClick,, % NightNr * MoveDiff, 0,,,, R
             } else {
+                CurrentDay := CurrentDay + 1
+                Sleep, 400
                 MouseClick,, %MoveDiff%, 0,,,, R
             }
         }
-        Sleep, 500
+        CurrentDay := 1
+        Sleep, 400
         MouseClick,, %StartX%, % StartY + (A_Index * MoveDiff)
     }
 }
 
 IsMonthEnd(DayMonth, ArrivalDate, ByRef Nights) {
     FormatTime, DayArrival, % ConvertDate(ArrivalDate), d
-    Msgbox, DayMonth %DayMonth%`nArrivalDate %ArrivalDate%`nNights %Nights%`nDayArrival %DayArrival%
     if ( DayMonth < ( DayArrival + Nights ) ) {
         Nights := DayMonth - DayArrival + 1
-        Msgbox, REACHED END OF MONTH!`n Nights: %Nights%
         return 1
     } else {
-        Msgbox, Everything OK! %Nights%
         return 0
     }
 }
