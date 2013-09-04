@@ -2,7 +2,7 @@
 ; Made by Mivor
 
 #SingleInstance force
-SendMode, Input
+; SendMode, Input
 StartX = 127
 StartY = 163
 MoveDiff = 34
@@ -55,7 +55,7 @@ SearchList() {
             ; same checks as normal
             CurrentDay := CurrentDay + NightNr
             Tooltip, %CurrentDay% - %NightNr%
-            Sleep, 400
+            Sleep, 100
             MouseClick,, % NightNr * MoveDiff, 0,,,, R
         }
         While,  CurrentDay <= MonthDays {
@@ -74,16 +74,17 @@ SearchList() {
                 ;
                 ; jump to end of reservation [NightNr * MoveDiff]
                 CurrentDay := CurrentDay + NightNr
-                Sleep, 400
+                Tooltip, %CurrentDay% - %NightNr%
+                Sleep, 100
                 MouseClick,, % NightNr * MoveDiff, 0,,,, R
             } else {
                 CurrentDay := CurrentDay + 1
-                Sleep, 400
+                Sleep, 100
                 MouseClick,, %MoveDiff%, 0,,,, R
             }
         }
         CurrentDay := 1
-        Sleep, 400
+        Sleep, 100
         MouseClick,, %StartX%, % StartY + (A_Index * MoveDiff)
     }
 }
