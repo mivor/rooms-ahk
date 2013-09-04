@@ -118,7 +118,7 @@ NotSameReservation(Date,DateControl) {
 
 
 CheckWindow() {
-    IfWinExist, Gestbal Hotel - Rezervari ahk_class TTimeLine {
+    If ( WinExist("Gestbal Hotel - Rezervari ahk_class TTimeLine") ) {
         WinActivate
         WinMaximize
         ; MsgBox, Window exists and is active
@@ -152,16 +152,16 @@ GetMonthDays(p_DateControl) {
 }
 
 ConvertDate(OrigDate,param = "ymd") {
-    IfInString, param, y {
-        Year := SubStr(OrigDate, -3 , 4)
+    If ( InStr(param, "y") ) {
+        Result := Result . SubStr(OrigDate, -3 , 4)
     }
-    IfInString, param, m {
-        Month := SubStr(OrigDate, -6 , 2)
+    If ( InStr(param, "m") ) {
+        Result := Result . SubStr(OrigDate, -6 , 2)
     }
-    IfInString, param, d {
-        Day := SubStr(OrigDate, -9, 2)
+    If ( InStr(param, "d") ) {
+        Result := Result . SubStr(OrigDate, -9, 2)
     }
-    return % Year . Month . Day
+    return, Result
 }
 
 GetControlList() {
@@ -172,7 +172,8 @@ GetControlList() {
     WinGet, ControlList, ControlList, A
     Controls = CONTROLS`n
     ControlText := ""
-    Loop, Parse, ControlList, `n {
+    Loop, Parse, ControlList, `n
+    {
         ControlGetText, ControlText, %A_LoopField%, A
         Controls := Controls . A_LoopField . "`t"
         Controls := Controls . "'" . ControlText . "'`n"
