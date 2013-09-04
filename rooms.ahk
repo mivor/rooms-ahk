@@ -58,6 +58,7 @@ SearchList()
             {
                 ; do stuff with reservation
                 GetCellData()
+                IsMonthEnd(MonthDays, DateArrival, NightNr)
                 ; check if RoomNr > 1 then
                 ;     check if room is already in ProcessedRes array
                 ;         subtract 1 from array element
@@ -76,6 +77,23 @@ SearchList()
         }
         Sleep, 500
         MouseClick,, %StartX%, % StartY + (A_Index * MoveDiff)
+    }
+}
+
+IsMonthEnd(DayMonth, ArrivalDate, ByRef Nights)
+{
+    FormatTime, DayArrival, % ConvertDate(ArrivalDate), d
+    Msgbox, DayMonth %DayMonth%`nArrivalDate %ArrivalDate%`nNights %Nights%`nDayArrival %DayArrival%
+    if ( DayMonth < ( DayArrival + Nights ) )
+    {
+        Nights := DayMonth - DayArrival + 1
+        Msgbox, REACHED END OF MONTH!`n Nights: %Nights%
+        return 1
+    }
+    else
+    {
+        Msgbox, Everything OK! %Nights%
+        return 0
     }
 }
 
