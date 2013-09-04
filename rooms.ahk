@@ -106,7 +106,6 @@ HandleMultipleRooms() {
     if ( RoomNr > 1 ) {
         if ( IsNewRes() ) {
             RememberRes()
-            Msgbox, % ARes . %ResInd% . 1_DateArrival
             CurrentSum := CurrentSum + ( PersonNr * NightNr )
         } else {
             ; SubtractRoomFromRes()
@@ -126,26 +125,23 @@ RememberRes() {
     ARes%ResInd%_DateArrival := DateArrival
     ARes%ResInd%_DateLeave := DateLeave
     ARes%ResInd%_ResName := ResName
-    Msgbox, % "Element(" . ResInd . ") " . ARes%ResInd%_ResName . "`n" . ARes%ResInd%_Count
+    ; Msgbox, % "Element(" . ResInd . ") " . ARes%ResInd%_ResName . "`n" . ARes%ResInd%_Count
     ResInd := ResInd + 1
 }
 
 IsNewRes() {
     global
-    Loop, % ResInd {
-        ; if ( ARes%ResInd%_PersonNr = PersonNr ||
-        ;     ARes%ResInd%_NightNr = NightNr ||
-        ;     ARes%ResInd%_RoomNr = RoomNr ||
-        ;     ARes%ResInd%_RoomName = RoomName ||
-        ;     ARes%ResInd%_DateArrival = DateArrival ||
-        ;     ARes%ResInd%_DateLeave = DateLeave ||
-        ;     ARes%ResInd%_ResName = ResName )
-        Msgbox, Inside LOOP!
-        Msgbox, % "Data:" . ResInd . "`n" . ARes%ResInd%_ResName
-        Msgbox, % ARes%ResInd%_ResName . "-" . ResName
-        if ( ARes%ResInd%_ResName = ResName ) {
-            ARes%ResInd%_Count := ARes%ResInd%_Count - 1
-            Msgbox, % "FOUND! Count: " . ARes%ResInd%_Count
+    Loop, % ResInd - 1 {
+        ; if ( ARes%A_Index%_PersonNr = PersonNr ||
+        ;     ARes%A_Index%_NightNr = NightNr ||
+        ;     ARes%A_Index%_RoomNr = RoomNr ||
+        ;     ARes%A_Index%_RoomName = RoomName ||
+        ;     ARes%A_Index%_DateArrival = DateArrival ||
+        ;     ARes%A_Index%_DateLeave = DateLeave ||
+        ;     ARes%A_Index%_ResName = ResName )
+        if ( ARes%A_Index%_ResName = ResName ) {
+            ARes%A_Index%_Count := ARes%A_Index%_Count - 1
+            Msgbox, % "FOUND! Count: " . ARes%A_Index%_Count
             return 0
         }
     }
