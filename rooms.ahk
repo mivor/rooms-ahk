@@ -54,7 +54,7 @@ SearchList()
         {
             Sleep, 250
             ; MouseMove, %MoveDiff%, 0,, R
-            if ( HasReservation() == 1 && NotSameReservation() == 1)
+            if ( HasReservation(ResNameControl) && NotSameReservation(DateLeave,DateLeaveControl) )
             {
                 ; do stuff with reservation
                 GetCellData()
@@ -91,19 +91,19 @@ GetCellData()
     ControlGetText, RoomName, %RoomNameControl%
 }
 
-HasReservation()
+HasReservation(ResControl)
 {
-    ControlGetText, ResName, %ResNameControl%, A
-    IfExist, ResName
+    ControlGetText, ResName, %ResControl%, A
+    if ( ResName != "" )
         return 1
     else
         return 0
 }
 
-NotSameReservation()
+NotSameReservation(Date,DateControl)
 {
-    ControlGetText, TempDateLeave, %DateLeaveControl%, A
-    If ( DateLeave != TempDateLeave )
+    ControlGetText, TempDate, %DateControl%, A
+    If ( Date != TempDate )
         return 1
     else
         return 0
