@@ -48,6 +48,16 @@ SearchList() {
     global
     MouseClick,, %StartX%, %StartY%
     Loop, 20 {
+        ; check for reservation from last month
+        if ( HasReservation(ResNameControl) ) {
+            GetCellData()
+            NightNr := IsFromLastMonth(DateArrival, DateLeave, NightNr)
+            ; same checks as normal
+            CurrentDay := CurrentDay + NightNr
+            Tooltip, %CurrentDay% - %NightNr%
+            Sleep, 400
+            MouseClick,, % NightNr * MoveDiff, 0,,,, R
+        }
         While,  CurrentDay <= MonthDays {
             if ( HasReservation(ResNameControl) && NotSameReservation(DateLeave,DateLeaveControl) ) {
                 ; do stuff with reservation
@@ -82,6 +92,16 @@ IsMonthEnd(DayMonth, ArrivalDate, Nights) {
     FormatTime, DayArrival, % ConvertDate(ArrivalDate), d
     if ( DayMonth < ( DayArrival + Nights ) ) {
         Nights := ( DayMonth - DayArrival + 1 )
+    }
+    return Nights
+}
+
+IsFromLastMonth(ArrivalDate, LeaveDate, Nights) {
+    FormatTime, ArrivalMonth, % ConvertDate(ArrivalDate, "ym"), M
+    FormatTime, LeaveMonth, % ConvertDate(LeaveDate, "ym"), M
+    if ( ArrivalMonth < LeaveMonth ) {
+        FormatTime, LeaveDay, % ConvertDate(LeaveDate), d
+        Nights := ( LeaveDay - 1 )
     }
     return Nights
 }
