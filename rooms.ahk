@@ -52,7 +52,7 @@ SearchList() {
             if ( HasReservation(ResNameControl) && NotSameReservation(DateLeave,DateLeaveControl) ) {
                 ; do stuff with reservation
                 GetCellData()
-                IsMonthEnd(MonthDays, DateArrival, NightNr)
+                NightNr := IsMonthEnd(MonthDays, DateArrival, NightNr)
                 ; check if RoomNr > 1 then
                 ;     check if room is already in ProcessedRes array
                 ;         subtract 1 from array element
@@ -78,14 +78,12 @@ SearchList() {
     }
 }
 
-IsMonthEnd(DayMonth, ArrivalDate, ByRef Nights) {
+IsMonthEnd(DayMonth, ArrivalDate, Nights) {
     FormatTime, DayArrival, % ConvertDate(ArrivalDate), d
     if ( DayMonth < ( DayArrival + Nights ) ) {
-        Nights := DayMonth - DayArrival + 1
-        return 1
-    } else {
-        return 0
+        Nights := ( DayMonth - DayArrival + 1 )
     }
+    return Nights
 }
 
 GetCellData() {
