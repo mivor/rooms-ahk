@@ -153,6 +153,23 @@ GetMonthDays(p_DateControl){
     return Days
 }
 
+ConvertDate(OrigDate,param = "ymd")
+{
+    IfInString, param, y
+    {
+        Year := SubStr(OrigDate, -3 , 4)
+    }
+    IfInString, param, m
+    {
+        Month := SubStr(OrigDate, -6 , 2)
+    }
+    IfInString, param, d
+    {
+        Day := SubStr(OrigDate, -9, 2)
+    }
+    return % Year . Month . Day
+}
+
 GetControlList()
 {
     #Persistent
