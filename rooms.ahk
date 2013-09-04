@@ -131,15 +131,15 @@ CheckWindow() {
 CheckFilter() {
     global
     ControlGetText, FilterText, %FilterControl%, A
-    IfNotInString, FilterText, Toate {
+    If ( ! InStr(FilterText, "Toate") ) {
         ControlSend, %FilterControl%, {up}{up}{up}{up}, A
     }
 }
 
 GetMonthDays(p_DateControl) {
     ControlGetText, DateText, %p_DateControl%, A
-    Year := SubStr(DateText, -3 , 4)
-    Month := SubStr(DateText, -6 , 2)
+    Year := ConvertDate(DateText, "y")
+    Month := ConvertDate(DateText, "m")
     FormatTime, DayStart, % Year . Month, YDay
     Month := Month + 1
     if (Month > 12) {
