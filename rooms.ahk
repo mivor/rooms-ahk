@@ -69,6 +69,7 @@ SearchList()
                 ;     add PersonNr to CurrentSum [Rooms|Apartman|Manzard]
                 ;
                 ; jump to end of reservation [NightNr * MoveDiff]
+                MouseClick,, % NightNr * MoveDiff, 0,,,, R
             }
             else
             {
