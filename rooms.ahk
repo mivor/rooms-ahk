@@ -3,6 +3,8 @@
 
 #SingleInstance force
 ; SendMode, Input
+; ARes%i%.%j% array for reservations with multiple rooms
+ResInd = 1
 StartX = 127
 StartY = 163
 MoveDiff = 34
@@ -17,6 +19,10 @@ RoomNameControl = TStaticText10
 DateArrivalControl = TStaticText13
 DateLeaveControl = TStaticText12
 ResNameControl = TStaticText15
+RoomSum = 0
+ApartmanSum = 0
+MansardSum = 0
+CurrentSum = 0
 
 F3::
 Main()
@@ -53,6 +59,8 @@ SearchList() {
             GetCellData()
             NightNr := IsFromLastMonth(DateArrival, DateLeave, NightNr)
             ; same checks as normal
+            HandleMultipleRooms()
+            Msgbox, CurrentSum: %CurrentSum%
             CurrentDay := CurrentDay + NightNr
             Tooltip, %CurrentDay% - %NightNr%
             Sleep, 100
@@ -64,6 +72,8 @@ SearchList() {
                 GetCellData()
                 NightNr := IsMonthEnd(MonthDays, DateArrival, NightNr)
                 ; check if RoomNr > 1 then
+                HandleMultipleRooms()
+                Msgbox, CurrentSum: %CurrentSum%
                 ;     check if room is already in ProcessedRes array
                 ;         subtract 1 from array element
                 ;     else
@@ -84,9 +94,62 @@ SearchList() {
             }
         }
         CurrentDay := 1
+        Msgbox, CurrentSum: %CurrentSum%
         Sleep, 100
         MouseClick,, %StartX%, % StartY + (A_Index * MoveDiff)
     }
+    Msgbox, CurrentSum: %CurrentSum%
+}
+
+HandleMultipleRooms() {
+    global
+    if ( RoomNr > 1 ) {
+        if ( IsNewRes() ) {
+            RememberRes()
+            Msgbox, % ARes . %ResInd% . 1_DateArrival
+            CurrentSum := CurrentSum + ( PersonNr * NightNr )
+        } else {
+            ; SubtractRoomFromRes()
+        }
+    } else {
+        CurrentSum := CurrentSum + ( PersonNr * NightNr )
+    }
+}
+
+RememberRes() {
+    global
+    ARes%ResInd%_Count := RoomNr
+    ARes%ResInd%_PersonNr := PersonNr
+    ARes%ResInd%_NightNr := NightNr
+    ARes%ResInd%_RoomNr := RoomNr
+    ARes%ResInd%_RoomName := RoomName
+    ARes%ResInd%_DateArrival := DateArrival
+    ARes%ResInd%_DateLeave := DateLeave
+    ARes%ResInd%_ResName := ResName
+    Msgbox, % "Element(" . ResInd . ") " . ARes%ResInd%_ResName . "`n" . ARes%ResInd%_Count
+    ResInd := ResInd + 1
+}
+
+IsNewRes() {
+    global
+    Loop, % ResInd {
+        ; if ( ARes%ResInd%_PersonNr = PersonNr ||
+        ;     ARes%ResInd%_NightNr = NightNr ||
+        ;     ARes%ResInd%_RoomNr = RoomNr ||
+        ;     ARes%ResInd%_RoomName = RoomName ||
+        ;     ARes%ResInd%_DateArrival = DateArrival ||
+        ;     ARes%ResInd%_DateLeave = DateLeave ||
+        ;     ARes%ResInd%_ResName = ResName )
+        Msgbox, Inside LOOP!
+        Msgbox, % "Data:" . ResInd . "`n" . ARes%ResInd%_ResName
+        Msgbox, % ARes%ResInd%_ResName . "-" . ResName
+        if ( ARes%ResInd%_ResName = ResName ) {
+            ARes%ResInd%_Count := ARes%ResInd%_Count - 1
+            Msgbox, % "FOUND! Count: " . ARes%ResInd%_Count
+            return 0
+        }
+    }
+    return 1
 }
 
 IsMonthEnd(DayMonth, ArrivalDate, Nights) {
