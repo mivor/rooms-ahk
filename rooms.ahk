@@ -33,8 +33,7 @@ GetControlList()
 ; GetWindowText()
 return
 
-Main()
-{
+Main() {
     global
     CheckWindow()
     CheckFilter()
@@ -44,18 +43,14 @@ Main()
     ExitApp, 0
 }
 
-SearchList()
-{
+SearchList() {
     global
     MouseClick,, %StartX%, %StartY%
-    Loop, 20
-    {
-        Loop, % MonthDays - 1
-        {
+    Loop, 20 {
+        Loop, % MonthDays - 1 {
             Sleep, 250
             ; MouseMove, %MoveDiff%, 0,, R
-            if ( HasReservation(ResNameControl) && NotSameReservation(DateLeave,DateLeaveControl) )
-            {
+            if ( HasReservation(ResNameControl) && NotSameReservation(DateLeave,DateLeaveControl) ) {
                 ; do stuff with reservation
                 GetCellData()
                 IsMonthEnd(MonthDays, DateArrival, NightNr)
@@ -70,9 +65,7 @@ SearchList()
                 ;
                 ; jump to end of reservation [NightNr * MoveDiff]
                 MouseClick,, % NightNr * MoveDiff, 0,,,, R
-            }
-            else
-            {
+            } else {
                 MouseClick,, %MoveDiff%, 0,,,, R
             }
         }
@@ -81,25 +74,20 @@ SearchList()
     }
 }
 
-IsMonthEnd(DayMonth, ArrivalDate, ByRef Nights)
-{
+IsMonthEnd(DayMonth, ArrivalDate, ByRef Nights) {
     FormatTime, DayArrival, % ConvertDate(ArrivalDate), d
     Msgbox, DayMonth %DayMonth%`nArrivalDate %ArrivalDate%`nNights %Nights%`nDayArrival %DayArrival%
-    if ( DayMonth < ( DayArrival + Nights ) )
-    {
+    if ( DayMonth < ( DayArrival + Nights ) ) {
         Nights := DayMonth - DayArrival + 1
         Msgbox, REACHED END OF MONTH!`n Nights: %Nights%
         return 1
-    }
-    else
-    {
+    } else {
         Msgbox, Everything OK! %Nights%
         return 0
     }
 }
 
-GetCellData()
-{
+GetCellData() {
     global
     ControlGetText, PersonNr, %PersonNrControl%
     ControlGetText, RoomNr, %RoomNrControl%
@@ -110,87 +98,73 @@ GetCellData()
     ControlGetText, RoomName, %RoomNameControl%
 }
 
-HasReservation(ResControl)
-{
+HasReservation(ResControl) {
     ControlGetText, ResName, %ResControl%, A
-    if ( ResName != "" )
+    if ( ResName != "" ) {
         return 1
-    else
+    } else {
         return 0
+    }
 }
 
-NotSameReservation(Date,DateControl)
-{
+NotSameReservation(Date,DateControl) {
     ControlGetText, TempDate, %DateControl%, A
-    If ( Date != TempDate )
+    If ( Date != TempDate ) {
         return 1
-    else
+    } else {
         return 0
+    }
 }
 
 
-CheckWindow()
-{
-    IfWinExist, Gestbal Hotel - Rezervari ahk_class TTimeLine
-    {
+CheckWindow() {
+    IfWinExist, Gestbal Hotel - Rezervari ahk_class TTimeLine {
         WinActivate
         WinMaximize
         ; MsgBox, Window exists and is active
-    }
-    else
-    {
+    } else {
         MsgBox, The program is not running!
         ExitApp, 1
     }
 }
 
-CheckFilter()
-{
+CheckFilter() {
     global
     ControlGetText, FilterText, %FilterControl%, A
-    IfNotInString, FilterText, Toate
-    {
+    IfNotInString, FilterText, Toate {
         ControlSend, %FilterControl%, {up}{up}{up}{up}, A
     }
 }
 
-GetMonthDays(p_DateControl){
+GetMonthDays(p_DateControl) {
     ControlGetText, DateText, %p_DateControl%, A
     Year := SubStr(DateText, -3 , 4)
     Month := SubStr(DateText, -6 , 2)
     FormatTime, DayStart, % Year . Month, YDay
     Month := Month + 1
-    if (Month > 12)
-    {
+    if (Month > 12) {
         Days := 31
-    }
-    else
-    {
+    } else {
         FormatTime, DayEnd, % Year . Month, YDay
         Days := DayEnd - DayStart
     }
     return Days
 }
 
-ConvertDate(OrigDate,param = "ymd")
-{
-    IfInString, param, y
-    {
+ConvertDate(OrigDate,param = "ymd") {
+    IfInString, param, y {
         Year := SubStr(OrigDate, -3 , 4)
     }
-    IfInString, param, m
-    {
+    IfInString, param, m {
         Month := SubStr(OrigDate, -6 , 2)
     }
-    IfInString, param, d
-    {
+    IfInString, param, d {
         Day := SubStr(OrigDate, -9, 2)
     }
     return % Year . Month . Day
 }
 
-GetControlList()
-{
+GetControlList() {
     #Persistent
     SetTimer, WatchActiveWindow, 200
     return
@@ -198,8 +172,7 @@ GetControlList()
     WinGet, ControlList, ControlList, A
     Controls = CONTROLS`n
     ControlText := ""
-    Loop, Parse, ControlList, `n
-    {
+    Loop, Parse, ControlList, `n {
         ControlGetText, ControlText, %A_LoopField%, A
         Controls := Controls . A_LoopField . "`t"
         Controls := Controls . "'" . ControlText . "'`n"
@@ -209,12 +182,10 @@ GetControlList()
     return
 }
 
-GetControl()
-{
+GetControl() {
     ; This working example will continuously update and display the
     ; name and position of the control currently under the mouse cursor:
-    Loop
-    {
+    Loop {
         Sleep, 100
         MouseGetPos, , , WhichWindow, WhichControl
         ControlGetPos, x, y, w, h, %WhichControl%, ahk_id %WhichWindow%
